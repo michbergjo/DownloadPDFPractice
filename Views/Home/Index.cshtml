@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
+</head>
+<div class="text-center">
+    <h1 class="display-4">Clientside file generation and download</h1>
+    <a id="a1" download="file1.txt">Download text file</a>
+   <style>
+	.demo {
+		border:1px solid #C0C0C0;
+		border-collapse:collapse;
+		padding:5px;
+	}
+	.demo th {
+		border:1px solid #C0C0C0;
+		padding:5px;
+		background:#F0F0F0;
+	}
+	.demo td {
+		border:1px solid #C0C0C0;
+		padding:5px;
+	}
+</style>
+<table class="demo">
+	<thead>
+	<tr>
+		<th>Header 1</th>
+		<th>Header 2</th>
+		<th>Header 3</th>
+		<th>Header 4</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td>&nbsp;1</td>
+		<td>&nbsp;2</td>
+		<td>&nbsp;3</td>
+		<td>&nbsp;4</td>
+	</tr>
+	<tr>
+		<td>&nbsp;5</td>
+		<td>&nbsp;6</td>
+		<td>&nbsp;7</td>
+		<td>8&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;9</td>
+		<td>&nbsp;10</td>
+		<td>&nbsp;11</td>
+		<td>&nbsp;12</td>
+	</tr>
+	<tr>
+		<td>&nbsp;13</td>
+		<td>&nbsp;14</td>
+		<td>&nbsp;15</td>
+		<td>16&nbsp;</td>
+	</tr>
+	</tbody>
+</table>
+<div> 
+<a id="a2" download="file2.csv">Download csv file</a>
+</div>
+<div>
+<a id="a3" download="file3.pdf">Download pdf file</a>
+</div>
+
+    <script>
+		//download text file
+        const a1 = document.getElementById("a1");
+        const blob1 = new Blob(["Hello ", "download!"], {type: "text/plain"})
+        a1.href = URL.createObjectURL(blob1);
+
+		//download csv file 
+		const data = [
+			["Header 1", "Header 2", "Header 3", "Header 4"],
+			[1, 2, 3, 4],
+			[5, 6, 7, 8],
+			[9, 10, 11, 12],
+			[13, 14, 15, 16]
+		];
+		function makeCSV(rows) {
+			return rows.map(r => r.join(",")).join("\n");
+		}
+		const a2 = document.getElementById("a2");
+        const blob2 = new Blob([makeCSV(data)])
+        a2.href = URL.createObjectURL(blob2);
+
+		//download pdf file
+		//uses jsPDF
+	  const a3 = document.getElementById("a3"); 
+      const doc = new jsPDF();
+	  doc.text("This is a PDF", 10, 10);
+//	  doc.save("file3.pdf");  //this for some reason forces download upon open
+	  var blobPFD = new Blob([doc.output()])
+	  const blobURL = URL.createObjectURL(blobPFD);
+	  a3.href = blobURL;
+    </script>
+</div>
+
